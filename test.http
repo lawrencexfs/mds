@@ -1,0 +1,7 @@
+POST  http://192.168.1.26:9091/api/file HTTP/1.1
+content-type: application/json
+
+abcdefgiabcdefgi....YYYYYYYY....abcdefgi
+
+###
+GET http://192.168.1.26:9091/api/file/abcdefgiabcdefgi HTTP/1.1

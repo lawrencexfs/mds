@@ -1,0 +1,10 @@
+# 基本配置
+
+#监听HTTP服务端口 */0.0.0.0/:::/127.0.0.1
+api_addr: '0.0.0.0:9091'
+version: '1.0.1'
+
+mongo_addr:
+  addr: 'mongodb://192.168.2.243:27017'
+  dbname: 'centos'
+  collection: 'file'
