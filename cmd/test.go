@@ -14,7 +14,7 @@ var (
 
 func main() {
 
-	flag.Parse()./t	
+	flag.Parse()
 	if *pprof != "" {
 		go func() {
 			http.ListenAndServe(*pprof, nil)
