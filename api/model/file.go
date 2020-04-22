@@ -6,7 +6,6 @@ import (
 
 	// "gopkg.in/mgo.v2/bson"
 	"go.mongodb.org/mongo-driver/bson"
-
 )
 
 //DisposeStatus 告警处置状态
@@ -74,7 +73,7 @@ func (lo *FileInfo) Update() error {
 	filter := bson.D{{"id", lo.Id}}
 	update := bson.D{
 		{"$set", bson.D{
-			{"info", lo.Info}
+			{"info", lo.Info},
 		}},
 	}
 
