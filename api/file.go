@@ -1,13 +1,12 @@
 package api
 
 import (
-	"io/ioutil"
 	"glog"
+	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
 
 	"mds/api/model"
-
 )
 
 const MinLength = 16
@@ -15,7 +14,6 @@ const BufLength = 1024
 
 type PostFileReq struct {
 	Len uint32
-	// Key   [16]byte
 	Buf []byte
 }
 
@@ -119,7 +117,6 @@ func PutFile(c *gin.Context) {
 	}
 	req.Buf = buf[:]
 
-	// if req.Key == "" || req.Value == "" {
 	if req.Len < MinLength {
 		c.JSON(400, ReqArgsErr)
 		return

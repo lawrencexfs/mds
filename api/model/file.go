@@ -74,7 +74,7 @@ func (lo *FileInfo) Update() error {
 	filter := bson.D{{"id", lo.Id}}
 	update := bson.D{
 		{"$set", bson.D{
-			{"info", lo.Info},
+			{"info", lo.Info}
 		}},
 	}
 

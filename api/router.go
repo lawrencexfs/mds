@@ -1,8 +1,8 @@
 package api
 
 import (
-	"log"
 	"glog"
+	"log"
 
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
