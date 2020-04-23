@@ -1,4 +1,4 @@
-module github.com/lawrencexfs/mds
+module mds
 
 go 1.12
 
@@ -10,4 +10,5 @@ require (
 	gopkg.in/yaml.v2 v2.2.8
 )
 
-replace glog => /home/gopath/src/glog
+// replace glog => /home/gopath/src/glog
+replace glog => github.com/golang/glog v0.0.0-20160126235308-23def4e6c14b
