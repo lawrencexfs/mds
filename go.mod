@@ -1,4 +1,4 @@
-module mds
+module github.com/lawrencexfs/mds
 
 go 1.12
 
