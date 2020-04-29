@@ -56,7 +56,7 @@ func HelloRespV(c *gin.Context) {
 //
 func HelloResp(c *gin.Context) {
 	glog.V(2).Infoln("接收请求.")
-	sinfo := "....test len 16 + 1024"
+	sinfo := "....test len 16 + X"
 	data := &model.FileInfo{
 		Id:   uuid.New().String(),
 		Info: sinfo,

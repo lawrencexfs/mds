@@ -1,7 +1,49 @@
+
+###
+POST  http://192.168.2.243:9091/api/file HTTP/1.1
+content-type: application/json
+
+abcdefgiabcdefgi....22YYYYYY....abcdefgi
+
+###  http://192.168.2.243:9091/api/file
+GET http://192.168.2.243:9091/api/file/abcdefgiabcdefgi HTTP/1.1
+
+
+
+###
 POST  http://192.168.1.26:9091/api/file HTTP/1.1
 content-type: application/json
 
-abcdefgiabcdefgi....YYYYYYYY....abcdefgi
+abcdefgiabcdefgi....22YYYYYY....abcdefgi
 
 ###
 GET http://192.168.1.26:9091/api/file/abcdefgiabcdefgi HTTP/1.1
+
+ 
+###
+POST  http://192.168.11.7:9091/api/file HTTP/1.1
+content-type: application/json
+
+abcdefgiabcdefgi....22YYYYYY....abcdefgi
+
+###
+GET http://192.168.11.7:9091/api/file/abcdefgiabcdefgi HTTP/1.1
+
+###
+GET http://192.168.11.7:9091/api/file HTTP/1.1
+
+###
+POST  http://192.168.11.7:9091/api/file HTTP/1.1
+content-type: application/json
+
+abcdefgiabcdefgi....22YYYYYY....abcdefgi
+
+
+
+###
+GET http://192.168.3.41:9091/api/file/abcdefgiabcdefgi HTTP/1.1
+
+
+
+
+
