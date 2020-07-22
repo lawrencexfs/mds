@@ -6,5 +6,5 @@ version: '1.0.1'
 
 mongo_addr:
   addr: 'mongodb://192.168.2.243:27017'
-  dbname: 'centos'
+  dbname: 'xm1'
   collection: 'file'

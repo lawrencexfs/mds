@@ -2,3 +2,4 @@ mds
 test
 test.http
 go.sum
+conf.yml
