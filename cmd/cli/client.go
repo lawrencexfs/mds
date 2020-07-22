@@ -4,6 +4,7 @@ import (
 	"flag"
 	"io"
 	"log"
+	"mds/rpc/dict"
 	"mds/rpc/opinterface"
 	"mds/rpc/sunrpc"
 	"net"
@@ -55,4 +56,14 @@ func main() {
 	}
 	log.Print("rpc.Call method... ", *method, "  rsp:", rsp)
 	log.Print("rpc.Call ... rsp: ", string(rsp.Xdata))
+
+	input, err := dict.Unserialize(rsp.Xdata)
+	if err != nil {
+		log.Print("dict.Unserialize ... rsp.Xdata fail... ")
+		// return err
+	} else {
+		log.Print("Call ... rsp.Xdata len... ", len(rsp.Xdata))
+		log.Print("Call ... rsp.Xdata map... ", input)
+	}
+
 }
