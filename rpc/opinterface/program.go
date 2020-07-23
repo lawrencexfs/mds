@@ -49,9 +49,9 @@ const (
 
 // GfCommonReq is a generic RPC response type
 type GfCommonReq struct {
+	Pargfid [16]byte
 	Bname   string
 	Xflags  uint
-	Pargfid [16]byte
 	Xdata   []byte
 }
 
