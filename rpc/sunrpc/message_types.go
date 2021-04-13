@@ -87,12 +87,12 @@ type OpaqueAuth struct {
 
 // CallBody represents the body of a RPC Call
 type CallBody struct {
-	RPCVersion uint32 // must be equal to 2
-	Program    uint32 // Remote program
-	Version    uint32 // Remote program's version
-	Procedure  uint32 // Procedure number
-	// Cred       OpaqueAuth // Authentication credential
-	// Verf       OpaqueAuth // Authentication verifier
+	RPCVersion uint32     // must be equal to 2
+	Program    uint32     // Remote program
+	Version    uint32     // Remote program's version
+	Procedure  uint32     // Procedure number
+	Cred       OpaqueAuth // Authentication credential
+	Verf       OpaqueAuth // Authentication verifier
 }
 
 // MismatchReply is used in ProgMismatch and RPCMismatch cases to denote

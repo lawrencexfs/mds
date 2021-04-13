@@ -3,6 +3,7 @@ module mds
 go 1.12
 
 require (
+	github.com/PuerkitoBio/goquery v1.6.1
 	github.com/gin-gonic/gin v1.6.2
 	github.com/google/uuid v1.1.1
 	github.com/prashanthpai/sunrpc v0.0.0-20170623061256-3eefdc316eca

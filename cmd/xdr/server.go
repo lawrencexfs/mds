@@ -21,7 +21,8 @@ func process(conn net.Conn) {
 		// var call sunrpc.RPCMsg
 		// _, err = xdr.Unmarshal(c.recordReader, &call)
 
-		var buf [4096]byte
+		// var buf [4096]byte
+		buf := make([]byte, 4096)
 		n, err := conn.Read(buf[:])
 		if err != nil {
 			fmt.Println("read from client failed, err:", err)

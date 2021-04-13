@@ -3,3 +3,5 @@ test
 test.http
 go.sum
 conf.yml
+client
+server
