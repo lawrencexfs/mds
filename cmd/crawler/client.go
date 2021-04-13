@@ -9,7 +9,7 @@ import (
 	_ "net/http/pprof"
 	"os"
 
-	// "strconv"
+	"strconv"
 
 	"github.com/PuerkitoBio/goquery"
 )
@@ -25,10 +25,11 @@ func main() {
 			log.Print(http.ListenAndServe(*pprof, nil))
 		}()
 	}
-	fmt.Println("Game Begin")
+	fmt.Println("Game Begin ... ... ...")
+	fmt.Println("Download url: ", *url)
 	CreateDir(*prepath)
 	ScanURL(*url, *prepath)
-
+	fmt.Println("Game over ... ... ...")
 }
 
 //创建文件夹
@@ -37,7 +38,7 @@ func CreateDir(path string) {
 	if err != nil {
 		fmt.Println("Path not exist : ", path)
 		if os.IsNotExist(err) {
-			err := os.Mkdir(path, os.ModePerm)
+			err := os.MkdirAll(path, os.ModePerm)
 			if err != nil {
 				fmt.Printf("os.Mkdir fail ![%v]\n", err)
 			}
@@ -59,8 +60,15 @@ func DownReFile(urls, path string) {
 		// fmt.Println("rsp.type : ", resp.Header.Get("Accept-Ranges"))
 	}
 	if resp.Header.Get("Accept-Ranges") == "bytes" {
-		fmt.Println("file : ", path)
-		Download(urls, path)
+		leng, _ := (strconv.Atoi(resp.Header.Get("Content-Length")))
+		tpfi, err := os.Stat(path)
+		if os.IsNotExist(err) || tpfi.Size() != int64(leng) {
+			fmt.Println("file : ", path)
+			Download(urls, path)
+		} else {
+			fmt.Println("file already exist ...", path)
+		}
+
 	} else {
 		fmt.Println("path: ", path)
 		CreateDir(path)
