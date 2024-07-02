@@ -11,3 +11,5 @@ cmd/tcpcli/tcli
 .vscode/settings.json
 cmd/tcpcli/clip
 cmd/tcpsvr/svrp
+cmd/zmqdemo/cli
+cmd/zmqdemo/svr
