@@ -7,3 +7,7 @@ client
 server
 cmd/filesvr/filesvr
 cmd/tcpsvr/tsvr
+cmd/tcpcli/tcli
+.vscode/settings.json
+cmd/tcpcli/clip
+cmd/tcpsvr/svrp
