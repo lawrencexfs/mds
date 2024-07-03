@@ -9,6 +9,8 @@
 #include <iomanip>
 #include <sstream>
 
+char *str = NULL;
+
 // sudo systemctl status nginx
 // sudo systemctl reload nginx
 // echo 'export PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH' >> /etc/bash.bashrc
@@ -58,7 +60,8 @@ std::string get_current_time()
 
     // 使用 stringstream 来格式化时间字符串
     std::ostringstream oss;
-    oss << std::put_time(&now_tm, "%Y:%m:%d %H:%M:%S");                // 格式化为 "2022:12:21 10:56:13"
+    oss << str << " at ";
+    oss << std::put_time(&now_tm, "%Y-%m-%d %H:%M:%S");                // 格式化为 "2022-12-21 10:56:13"
     oss << ':' << std::setw(3) << std::setfill('0') << now_ms.count(); // 添加毫秒部分
 
     return oss.str();
@@ -109,23 +112,24 @@ int main(int argc, char *argv[])
     struct sockaddr_in server_addr;
 
     // 解析命令行参数
-    while ((opt = getopt(argc, argv, "a:")) != -1)
+    while ((opt = getopt(argc, argv, "a:s:")) != -1)
     {
         switch (opt)
         {
         case 'a':
             addr = optarg;
             break;
+        case 's':
+            str = optarg;
+            break;
         default:
-            fprintf(stderr, "Usage: %s -a <IP_ADDRESS>\n", argv[0]);
+            fprintf(stderr, "Usage: %s -a <IP_ADDRESS> -s hello.x1\n", argv[0]);
             exit(EXIT_FAILURE);
         }
     }
-
-    if (addr == NULL)
+    if (addr == NULL || str == NULL)
     {
-        fprintf(stderr, "IP address not provided.\n");
-        fprintf(stderr, "Usage: %s -a <IP_ADDRESS>\n", argv[0]);
+        fprintf(stderr, "Usage: %s -a <IP_ADDRESS> -s hello.x1\n", argv[0]);
         exit(EXIT_FAILURE);
     }
 
