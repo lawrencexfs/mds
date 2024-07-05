@@ -18,7 +18,11 @@ char *str = NULL;
 // source   /etc/bash.bashrc
 
 // g++ -o cli cli.cpp $(pkg-config --cflags --libs libczmq)
-// g++ - o svr svr.cpp $(pkg - config-- cflags-- libs libczmq)
+// g++ -o cli cli.cpp $(pkg-config --cflags --libs libczmq) -Wwrite-strings -O2
+// g++ -o svr svr.cpp $(pkg-config --cflags --libs libczmq)
+
+// ./ svr - a tcp : // 127.0.0.1:8090 -s local
+// ./ cli - a tcp : // 10.0.20.189:10010 -c 10000
 
 // ./cli -a tcp://127.0.0.1:8090 -s hello.ww1  && ./cli -a tcp://127.0.0.1:8090 -s hello.ww2 && ./cli -a tcp://127.0.0.1:8090 -s hello.ww3
 
