@@ -13,3 +13,13 @@ cmd/tcpcli/clip
 cmd/tcpsvr/svrp
 cmd/zmqdemo/cli
 cmd/zmqdemo/svr
+cmd/zmqdemo/ecli
+cmd/zmqdemo/build/*
+cmd/zmqgo/cli
+cmd/zmq.push.pull/pull
+cmd/zmq.push.pull/push
+.vscode/settings.json
+cmd/zmqdemo/.vscode/settings.json
+cmd/zmq.push.pull/pullr
+cmd/zmq.push.pull/pushs
+.vscode/settings.json

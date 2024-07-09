@@ -21,10 +21,10 @@ while true; do
 done
 
 vrrp_instance VI_1 {
-    state MASTER
+    state BACKUP
     interface eth0
     virtual_router_id 51
-    priority 100
+    priority 90
     advert_int 1
     authentication {
         auth_type PASS
@@ -56,7 +56,6 @@ virtual_server 10.0.20.188 80 {
         TCP_CHECK {
             connect_timeout 3
             nb_get_retry 3
-            delay_before_retry 3
         }
     }
 }
