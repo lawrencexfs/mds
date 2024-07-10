@@ -26,6 +26,19 @@
                 "-dir",
                 "/"
             ]
+        },
+        {
+            "name": "C++ Debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "/root/dev/mds/cmd/threadpool/demo", // 替换为你的可执行文件路径
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "/usr/bin/gdb", // 替换为你的 GDB 路径
         }
     ]
 }
