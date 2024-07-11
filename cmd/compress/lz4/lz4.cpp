@@ -31,7 +31,7 @@ std::string compressData(const std::string &input)
 std::string decompressData(const std::string &input)
 {
     // 获取解压缩后的最大长度
-    int maxDecompressedSize = input.size() * 3; // 估算一个足够大的解压缩后的长度
+    int maxDecompressedSize = input.size() * 10; // 估算一个足够大的解压缩后的长度
 
     // 分配解压缩后的缓冲区
     char *decompressedData = new char[maxDecompressedSize];
