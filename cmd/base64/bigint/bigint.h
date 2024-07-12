@@ -50,6 +50,8 @@ public:
 
     // BASE64字符串格式化输出
     std::string toBase64String() const;
+    // BASE64字符串解码
+    std::string DecodeBase64(std::string base64) const;
 };
 
 #endif

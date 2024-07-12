@@ -3,6 +3,7 @@
 #include <algorithm> // 包含std::reverse
 #include <iostream>
 #include <chrono>
+#include <string.h>
 
 // using namespace std;
 
@@ -336,9 +337,11 @@ int LargeInt::toInt() const
 
 std::string LargeInt::toBase64String() const
 {
-    // std::vector<char> dst;
+    if (_data.size() == 0)
+    {
+        return "";
+    }
     std::string dst;
-
     LargeInt src = *this;
     do
     {
@@ -350,6 +353,58 @@ std::string LargeInt::toBase64String() const
     } while (src > 0);
     std::reverse(dst.begin(), dst.end());
     return dst;
+}
+
+std::string LargeInt::DecodeBase64(std::string base64) const
+{
+    if (base64.length() == 0)
+    {
+        return "";
+    }
+    std::vector<int> valueToIndex(128); // 有效可见字符值的范围是0-127
+    for (int ind = 0; ind < 128; ++ind)
+    {
+        valueToIndex[ind] = -1; // 初始化
+    }
+    for (int ind = 0; ind < 64; ++ind)
+    {
+        valueToIndex[base64_chars[ind]] = ind; // 直接映射值到索引
+    }
+
+    std::string dst;
+    LargeInt tp(0);
+    for (int ind = 0; ind < base64.size(); ind++)
+    {
+        u_int val = base64[ind];
+        // val 字符 通过转换映射数组找到对应的索引数值
+        val = valueToIndex[val];
+        // if (val >= 'A' && val <= 'Z')
+        // {
+        //     val = val - 'A';
+        // }
+        // else if (val >= 'a' && val <= 'z')
+        // {
+        //     val = val - 'a' + 26;
+        // }
+        // else if (val >= '0' && val <= '9')
+        // {
+        //     val = val - '0' + 52;
+        // }
+        // else if (val == '+')
+        // {
+        //     val = 62;
+        // }
+        // else if (val == '/')
+        // {
+        //     val = 63;
+        // }
+        // else
+        // {
+        //     return "";
+        // }
+        tp = tp * 64 + val;
+    }
+    return tp.toString();
 }
 
 // 计算商值
@@ -440,12 +495,19 @@ int main(int argc, char **argv)
 
     auto start = std::chrono::high_resolution_clock::now();
 
-    for (auto i = 0; i < 100000; ++i)
+    for (auto i = 0; i < 10000; ++i)
     {
-        LargeInt origin("315649816498164761562056488065489561036849876300254661");
-        // std::cout << "origin 字符串: " << origin.toString() << std::endl;
-        // std::cout << "base64 字符串: " << origin.toBase64String() << std::endl;
+        LargeInt origin("315649811562056488133654506548956103684987630025466806548946434671");
+        std::cout << "origin 字符串: " << origin.toString() << std::endl;
         auto temp = origin.toBase64String();
+        std::cout << "base64 字符串: " << temp << std::endl;
+        temp = origin.DecodeBase64(temp);
+        std::cout << "decode 字符串: " << temp << std::endl;
+        if (strcmp(origin.toString().c_str(), temp.c_str()) != 0)
+        {
+            std::cout << "Decoded err, buf disagree : " << temp << std::endl;
+            return 0;
+        }
     }
 
     auto end = std::chrono::high_resolution_clock::now();
