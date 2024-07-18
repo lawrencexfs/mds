@@ -6,7 +6,7 @@
 int main(void)
 {
     // 创建一个 PULL 套接字并连接到发送者
-    zsock_t *pull = zsock_new_pull("tcp://10.0.20.2:5551");
+    zsock_t *pull = zsock_new_pull(">tcp://10.0.20.2:5556");
     if (pull == nullptr)
     {
         std::cout << "err!" << std::endl;

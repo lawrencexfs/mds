@@ -5,6 +5,9 @@
 // g++ cli.cpp -o push -lzmq
 // g++ svr.cpp -o pull -lzmq
 // ./push -a tcp://10.0.20.2:5555 -c 100
+// ./pull -a tcp://10.0.20.2:5555
+// czmq 库 只能适用 多对一，多个 push 发送, 单个 pull 接收， pull 端绑定地址
+// zmq 库 只能适用 一对多，单个 push 发送， 多个 pull 接收， push 端绑定地址
 
 const char *addr = "tcp://*:5555";
 const char *str = "xxxx";
