@@ -59,7 +59,7 @@ int HandleMessage()
             if (parsingSuccessful)
             {
                 auto sql = jreq["Sql"].asString();
-                std::cout << "globalTaskQ pop sql: " << sql << std::endl;
+                // std::cout << "globalTaskQ pop sql: " << sql << std::endl;
                 pqxx::result reply;
                 if (client.sqlExec(sql, reply))
                 {
@@ -69,6 +69,10 @@ int HandleMessage()
                 {
                     std::cout << "exec sql fail... " << std::endl;
                 }
+            }
+            else
+            {
+                std::cout << "Json req parse fail..." << std::endl;
             }
         }
         else

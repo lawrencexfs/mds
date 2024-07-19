@@ -24,4 +24,4 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCES)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} PkgConfig::pgsql boost_system lz4 z czmq tbb jsoncpp)
+target_link_libraries(${PROJECT_NAME} PRIVATE boost_system lz4 z czmq tbb jsoncpp pqxx)
