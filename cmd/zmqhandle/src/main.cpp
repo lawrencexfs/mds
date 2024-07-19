@@ -40,8 +40,10 @@ void HandleMQ(zsock_t *socket, void *arg)
 
 int HandleMessage()
 {
-    std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.3 port=5433";
+    // std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.9 port=5433";
+    std::string connectStr = "dbname=devdb user=dev hostaddr=127.0.0.1 port=5432";
     PgsqlClient client(connectStr);
+    int count = 0;
     while (run)
     {
         // if (globalTask.size() == 0)
@@ -52,18 +54,22 @@ int HandleMessage()
         std::string req;
         if (globalTaskQ.try_pop(req))
         {
-            std::cout << "globalTaskQ pop task: " << req << std::endl;
-            Json::Value jreq;
-            bool parsingSuccessful = Json::Reader().parse(req.c_str(), jreq);
+            ++count;
+            std::cout << count << " > globalTaskQ pop task: " << req << std::endl;
+            // Json::Value jreq;
+            // bool parsingSuccessful = Json::Reader().parse(req.c_str(), jreq);
+            auto jreq = nlohmann::json::parse(req.c_str());
+            auto iter = jreq.find("Sql");
             //  判断处理结果
-            if (parsingSuccessful)
+            if (iter != jreq.end())
             {
-                auto sql = jreq["Sql"].asString();
+                // auto sql = jreq["Sql"].asString();
+                auto sql = iter.value().get<std::string>();
                 // std::cout << "globalTaskQ pop sql: " << sql << std::endl;
                 pqxx::result reply;
                 if (client.sqlExec(sql, reply))
                 {
-                    std::cout << "exec sql ok... " << std::endl;
+                    // std::cout << "exec sql ok... " << std::endl;
                 }
                 else
                 {

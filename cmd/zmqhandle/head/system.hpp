@@ -20,6 +20,7 @@
 #include <utility>
 #include <variant>
 #include <mimalloc-override.h>
+#include "nlohmann/json.hpp"
 #define WORKER_READY "\001"
 
 class NonCopyable
