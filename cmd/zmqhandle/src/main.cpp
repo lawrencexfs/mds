@@ -7,6 +7,7 @@
 #include <vector>
 #include <json/reader.h>
 #include "pgsqlClient.hpp"
+#include "redisClient.hpp"
 #include "order.h"
 
 //  g++ -o pushs push.cpp -lczmq
@@ -40,17 +41,16 @@ void HandleMQ(zsock_t *socket, void *arg)
 
 int HandleMessage()
 {
-    // std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.9 port=5433";
-    std::string connectStr = "dbname=devdb user=dev hostaddr=127.0.0.1 port=5432";
-    PgsqlClient client(connectStr);
+    std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.9 port=5433";
+    // std::string connectStr = "dbname=devdb user=dev hostaddr=127.0.0.1 port=5432";
+    PgsqlClient pgclient(connectStr);
+
+    // RedisClient reclient("10.0.20.20", 1111);
+    RedisClient reclient("10.0.20.2", 6379);
+
     int count = 0;
     while (run)
     {
-        // if (globalTask.size() == 0)
-        // {
-        //     std::this_thread::sleep_for(std::chrono::milliseconds(100));
-        //     continue;
-        // }
         std::string req;
         if (globalTaskQ.try_pop(req))
         {
@@ -67,8 +67,21 @@ int HandleMessage()
                 auto sql = iter.value().get<std::string>();
                 // std::cout << "globalTaskQ pop sql: " << sql << std::endl;
                 pqxx::result reply;
-                if (client.sqlExec(sql, reply))
+                if (pgclient.sqlExec(sql, reply))
                 {
+                    size_t found = sql.find("select");
+                    if (found != std::string::npos)
+                    {
+                        // select
+                        // 将 pqxx::result 转换为 JSON 字符串的函数
+                        nlohmann::json res = pqxx_result_to_json(reply);
+                        reclient.handleSelect(sql, res.dump());
+                    }
+                    else
+                    {
+                        // insert update delete ...
+                        reclient.handleNoSelect(sql);
+                    }
                     // std::cout << "exec sql ok... " << std::endl;
                 }
                 else

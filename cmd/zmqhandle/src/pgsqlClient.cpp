@@ -30,10 +30,10 @@ PgsqlClient::~PgsqlClient()
 
 pqxx::result PgsqlClient::execCommandOneSql(std::string_view view)
 {
-    pqxx::result res;
-    pqxx::nontransaction work(_conn);
-    res = work.exec(view);
-    return res;
+    pqxx::result res;                 // 创建一个 pqxx::result 对象，用于存储查询结果
+    pqxx::nontransaction work(_conn); // 创建一个非事务性的工作对象，使用给定的连接 _conn
+    res = work.exec(view);            // 在工作对象上执行 SQL 查询，并将结果赋值给 res
+    return res;                       // 返回查询结果
 }
 
 bool PgsqlClient::sqlExec(std::string cmd, pqxx::result &reply)
@@ -56,3 +56,26 @@ bool PgsqlClient::sqlExec(std::string cmd, pqxx::result &reply)
     }
     return ret;
 }
+
+// 将 pqxx::result 转换为 JSON 字符串的函数
+nlohmann::json pqxx_result_to_json(const pqxx::result &r)
+{
+    // 创建一个 JSON 数组来存储所有行
+    nlohmann::json j_array = nlohmann::json::array();
+    // 遍历结果集中的每一行
+    for (const auto &row : r)
+    {
+        // 对于每一行，创建一个 JSON 对象
+        nlohmann::json j_object = nlohmann::json::object();
+        // 遍历行中的所有列
+        for (const auto &field : row)
+        {
+            // 将列值添加到 JSON 对象中
+            // 这里假设字段值是字符串，根据实际情况可能需要转换类型
+            j_object[field.name()] = field.as<std::string>();
+        }
+        // 将 JSON 对象添加到数组中
+        j_array.push_back(j_object);
+    }
+    return j_array;
+};

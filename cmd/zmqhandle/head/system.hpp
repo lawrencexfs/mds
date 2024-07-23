@@ -33,3 +33,28 @@ protected:
     NonCopyable(NonCopyable &&) = delete;
     NonCopyable &operator=(NonCopyable &&) = delete;
 };
+
+struct RedisReplyWrap : NonCopyable
+{
+    redisReply *_reply = nullptr;
+    inline ~RedisReplyWrap()
+    {
+        if (_reply != nullptr)
+        {
+            freeReplyObject(_reply);
+            _reply = nullptr;
+        }
+    }
+    inline RedisReplyWrap(RedisReplyWrap &&temp)
+    {
+        _reply = temp._reply;
+        temp._reply = nullptr;
+    }
+    inline RedisReplyWrap(redisReply *reply)
+        : _reply(reply)
+    {
+    }
+    inline RedisReplyWrap()
+    {
+    }
+};

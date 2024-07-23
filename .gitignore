@@ -23,3 +23,16 @@ cmd/zmqdemo/.vscode/settings.json
 cmd/zmq.push.pull/pullr
 cmd/zmq.push.pull/pushs
 .vscode/settings.json
+cmd/base64/demo
+cmd/threadpool/demo
+cmd/gzip/demo
+cmd/lz4/demo
+.gitignore
+cmd/compress/gzip/demo
+cmd/compress/lz4/demo
+cmd/compress/demo
+cmd/base64/bigint/demo
+cmd/base64/bigint/build/*
+cmd/compress-plug/build/*
+cmd/compress-plug/.vscode/*
+cmd/zmqhandle/build/

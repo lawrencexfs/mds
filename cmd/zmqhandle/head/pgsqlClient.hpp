@@ -32,3 +32,5 @@ public:
      */
     bool sqlExec(std::string cmd, pqxx::result &reply);
 };
+
+nlohmann::json pqxx_result_to_json(const pqxx::result &r);

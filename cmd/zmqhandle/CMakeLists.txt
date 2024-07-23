@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(zmqhandle)
 
 # 设置C++标准
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(CheckIncludeFileCXX)
@@ -24,4 +24,4 @@ aux_source_directory(${CMAKE_CURRENT_SOURCE_DIR}/src SOURCES)
 
 add_executable(${PROJECT_NAME} ${SOURCES})
 
-target_link_libraries(${PROJECT_NAME} PRIVATE boost_system lz4 z czmq tbb pqxx)
+target_link_libraries(${PROJECT_NAME} PRIVATE boost_system lz4 z czmq tbb pqxx hiredis redis++ -lunwind -lunwind-x86_64)
