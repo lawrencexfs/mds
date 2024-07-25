@@ -37,6 +37,7 @@ protected:
 struct RedisReplyWrap : NonCopyable
 {
     redisReply *_reply = nullptr;
+    bool _ok = false;
     inline ~RedisReplyWrap()
     {
         if (_reply != nullptr)

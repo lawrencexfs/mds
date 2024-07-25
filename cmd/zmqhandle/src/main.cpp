@@ -56,42 +56,54 @@ int HandleMessage()
         {
             ++count;
             std::cout << count << " > globalTaskQ pop task: " << req << std::endl;
-            // Json::Value jreq;
-            // bool parsingSuccessful = Json::Reader().parse(req.c_str(), jreq);
-            auto jreq = nlohmann::json::parse(req.c_str());
-            auto iter = jreq.find("Sql");
-            //  判断处理结果
-            if (iter != jreq.end())
+            try
             {
-                // auto sql = jreq["Sql"].asString();
-                auto sql = iter.value().get<std::string>();
-                // std::cout << "globalTaskQ pop sql: " << sql << std::endl;
-                pqxx::result reply;
-                if (pgclient.sqlExec(sql, reply))
+                // Json::Value jreq;
+                // bool parsingSuccessful = Json::Reader().parse(req.c_str(), jreq);
+                auto jreq = nlohmann::json::parse(req.c_str());
+                auto iter = jreq.find("Sql");
+                //  判断处理结果
+                if (iter != jreq.end())
                 {
-                    size_t found = sql.find("select");
-                    if (found != std::string::npos)
+                    // auto sql = jreq["Sql"].asString();
+                    auto sql = iter.value().get<std::string>();
+                    // std::cout << "globalTaskQ pop sql: " << sql << std::endl;
+                    pqxx::result reply;
+                    if (pgclient.sqlExec(sql, reply))
                     {
-                        // select
-                        // 将 pqxx::result 转换为 JSON 字符串的函数
-                        nlohmann::json res = pqxx_result_to_json(reply);
-                        reclient.handleSelect(sql, res.dump());
+                        size_t found = sql.find("select");
+                        if (found != std::string::npos)
+                        {
+                            // select
+                            // 将 pqxx::result 转换为 JSON 字符串的函数
+                            nlohmann::json res = pqxx_result_to_json(reply);
+                            reclient.handleSelect(sql, res.dump());
+                        }
+                        else
+                        {
+                            // insert update delete ...
+                            reclient.handleNoSelect(sql);
+                        }
+                        // std::cout << "exec sql ok... " << std::endl;
                     }
                     else
                     {
-                        // insert update delete ...
-                        reclient.handleNoSelect(sql);
+                        reclient.execSqlFail(sql, pgclient.Error());
+                        std::cout << "exec sql fail... " << std::endl;
                     }
-                    // std::cout << "exec sql ok... " << std::endl;
                 }
                 else
                 {
-                    std::cout << "exec sql fail... " << std::endl;
+                    std::cout << "Json req parse fail..." << std::endl;
                 }
             }
-            else
+            catch (const nlohmann::json::parse_error &e)
             {
-                std::cout << "Json req parse fail..." << std::endl;
+                // 捕获nlohmann::json::parse方法抛出的异常
+                std::cerr << "nlohmann::json::parse error: " << e.what() << std::endl;
+                // std::exception_ptr err;
+                // err = std::current_exception();
+                // std::current_exception())
             }
         }
         else

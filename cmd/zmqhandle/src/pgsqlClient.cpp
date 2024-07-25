@@ -47,14 +47,23 @@ bool PgsqlClient::sqlExec(std::string cmd, pqxx::result &reply)
     }
     catch (const pqxx::sql_error &e)
     {
+        _err = e.what();
         std::cout << "SQL error: " << e.what() << std::endl;
         std::cout << "Query was: " << e.query() << std::endl;
+        ret = false;
     }
     catch (const std::exception &e)
     {
+        _err = e.what();
         std::cout << "Error: " << e.what() << std::endl;
+        ret = false;
     }
     return ret;
+}
+
+std::string PgsqlClient::Error()
+{
+    return _err;
 }
 
 // 将 pqxx::result 转换为 JSON 字符串的函数

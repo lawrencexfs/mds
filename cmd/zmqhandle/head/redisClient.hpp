@@ -6,8 +6,13 @@
  * FilePath: /zmqhandle/head/redisClient.hpp
  * Description: redis client command exec
  */
+
 #pragma once
 #include "system.hpp"
+#include <sw/redis++/redis++.h>
+#include <sw/redis++/sentinel.h>
+#include <sw/redis++/connection.h>
+#include <sw/redis++/connection_pool.h>
 
 class RedisClient
 {
@@ -16,6 +21,7 @@ private:
     int _port;
     redisContext *_client = nullptr;
     int _transactionOrderNum = 0;
+    // sw::redis::RedisCluster *_client = nullptr;
 
 public:
     RedisClient(const nlohmann::json &value);
@@ -64,6 +70,7 @@ public:
 
     void handleSelect(const std::string &order, std::string object);
     void handleNoSelect(const std::string &order);
+    void execSqlFail(const std::string &order, std::string err = "0");
 };
 
 struct CUtil

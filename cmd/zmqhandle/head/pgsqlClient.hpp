@@ -14,6 +14,7 @@ class PgsqlClient
 private:
     std::string _connectStr;
     pqxx::connection _conn;
+    std::string _err;
 
 public:
     PgsqlClient(std::string view);
@@ -31,6 +32,8 @@ public:
      * @return {*}
      */
     bool sqlExec(std::string cmd, pqxx::result &reply);
+
+    std::string Error();
 };
 
 nlohmann::json pqxx_result_to_json(const pqxx::result &r);

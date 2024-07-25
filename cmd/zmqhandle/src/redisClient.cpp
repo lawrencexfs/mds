@@ -138,6 +138,20 @@ void RedisClient::handleNoSelect(const std::string &order)
     }
 }
 
+void RedisClient::execSqlFail(const std::string &order, std::string err)
+{
+    RedisReplyWrap replyTemp;
+    exeSetCommand(replyTemp, order, err);
+    if (replyTemp._reply && strcmp(replyTemp._reply->str, "OK") == 0)
+    {
+        // ok
+    }
+    else
+    {
+        std::cout << "redis err is " << std::endl;
+    }
+}
+
 void RedisClient::startTransaction()
 {
     _transactionOrderNum = 0;
