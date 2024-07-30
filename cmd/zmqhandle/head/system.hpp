@@ -21,6 +21,9 @@
 #include <variant>
 #include <mimalloc-override.h>
 #include "nlohmann/json.hpp"
+#include <boost/uuid/uuid.hpp>
+#include <boost/uuid/uuid_generators.hpp>
+#include <boost/uuid/uuid_io.hpp>
 #define WORKER_READY "\001"
 
 class NonCopyable

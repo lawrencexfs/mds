@@ -14,7 +14,7 @@
 //  g++ -o pullr pull.cpp -lczmq
 
 Singleton &global = Singleton::getInstance();
-const char *paddr = "10.0.20.3:10086";
+const char *paddr = "10.0.20.3:10087";
 tbb::concurrent_queue<std::string> globalTaskQ;
 // std::vector<std::string> globalTask;
 volatile bool run = true;
@@ -41,7 +41,8 @@ void HandleMQ(zsock_t *socket, void *arg)
 
 int HandleMessage()
 {
-    std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.9 port=5433";
+    // std::string connectStr = "dbname=postgres user=yugabyte hostaddr=10.0.20.9 port=5433";
+    std::string connectStr = "dbname=yugabyte user=yugabyte hostaddr=10.0.20.9 port=5433";
     // std::string connectStr = "dbname=devdb user=dev hostaddr=127.0.0.1 port=5432";
     PgsqlClient pgclient(connectStr);
 
@@ -180,4 +181,39 @@ int main(int argc, char *argv[])
 
 //     zsock_destroy(&pull);
 //     return 0;
+// }
+
+// void Test()
+// {
+//     RedisClient reclient("10.0.20.2", 6379);
+//     auto start_time = std::chrono::high_resolution_clock::now();
+//     auto value = reclient.get("6454d8*");
+//     auto end_time = std::chrono::high_resolution_clock::now();
+
+//     std::chrono::duration<double, std::milli> elapsed = end_time - start_time;
+//     std::cout << "GET command took " << elapsed.count() << " milliseconds." << std::endl;
+//     return;
+
+//     auto start = std::chrono::system_clock::now();
+//     int i;
+//     try
+//     {
+//         for (i = 0; i < 10000000; ++i)
+//         {
+//             boost::uuids::random_generator gen;
+//             boost::uuids::uuid uuid = gen();
+//             //      boost::uuids::uuid uuid = boost::uuids::random_generator()();
+//             //      std::string uuid_str = boost::uuids::to_string(uuid);
+//             // std::cout << uuid << std::endl;
+//             reclient.handleNoSelect(boost::uuids::to_string(uuid));
+//         }
+//     }
+//     catch (...)
+//     {
+//         std::cerr << "RedisClient call set error: " << std::endl;
+//         return;
+//     }
+//     auto end = std::chrono::system_clock::now();
+//     std::chrono::duration<double> diff = end - start;
+//     std::cout << "Time to set key: " << i << " simultaneous time: " << diff.count() << " s" << std::endl;
 // }

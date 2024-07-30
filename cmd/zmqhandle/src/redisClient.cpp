@@ -152,6 +152,47 @@ void RedisClient::execSqlFail(const std::string &order, std::string err)
     }
 }
 
+std::string RedisClient::get(const std::string &key)
+{
+    std::string ret;
+    RedisReplyWrap replyTemp;
+    exeCommand(replyTemp, std::string("get ") + key);
+    if (replyTemp._reply)
+    {
+        if (replyTemp._reply->type == REDIS_REPLY_STRING)
+        {
+            // 解析字符串类型的结果
+            std::string result(replyTemp._reply->str, replyTemp._reply->len);
+            ret = result;
+            // 使用 result 进行后续操作
+        }
+        else if (replyTemp._reply->type == REDIS_REPLY_INTEGER)
+        {
+            // 解析整数类型的结果
+            int result = replyTemp._reply->integer;
+            // 使用 result 进行后续操作
+        }
+        else if (replyTemp._reply->type == REDIS_REPLY_ARRAY)
+        {
+            // 解析数组类型的结果
+            for (size_t i = 0; i < replyTemp._reply->elements; i++)
+            {
+                redisReply *element = replyTemp._reply->element[i];
+                // 根据 element 的类型进行进一步解析
+            }
+        }
+        else
+        {
+            // 处理其他类型的结果
+        }
+    }
+    else
+    {
+        std::cout << "redis err is " << std::endl;
+    }
+    return ret;
+}
+
 void RedisClient::startTransaction()
 {
     _transactionOrderNum = 0;

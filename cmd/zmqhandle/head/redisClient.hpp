@@ -71,6 +71,7 @@ public:
     void handleSelect(const std::string &order, std::string object);
     void handleNoSelect(const std::string &order);
     void execSqlFail(const std::string &order, std::string err = "0");
+    std::string get(const std::string &key);
 };
 
 struct CUtil
