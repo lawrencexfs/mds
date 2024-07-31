@@ -13,15 +13,16 @@
 #include <sw/redis++/sentinel.h>
 #include <sw/redis++/connection.h>
 #include <sw/redis++/connection_pool.h>
+#include <sw/redis++/async_redis++.h>
 
 class RedisClient
 {
 private:
     std::string _connectIP;
     int _port;
-    redisContext *_client = nullptr;
+    // redisContext *_client = nullptr;
     int _transactionOrderNum = 0;
-    // sw::redis::RedisCluster *_client = nullptr;
+    sw::redis::AsyncRedisCluster *_client = nullptr;
 
 public:
     RedisClient(const nlohmann::json &value);

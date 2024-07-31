@@ -81,7 +81,17 @@ nlohmann::json pqxx_result_to_json(const pqxx::result &r)
         {
             // 将列值添加到 JSON 对象中
             // 这里假设字段值是字符串，根据实际情况可能需要转换类型
-            j_object[field.name()] = field.as<std::string>();
+            // j_object[field.name()] = field.as<std::string>();
+            if (field.is_null())
+            {
+                // 处理空值，例如使用 JSON 中的 null 表示
+                j_object[field.name()] = nullptr;
+            }
+            else
+            {
+                // 处理非空值
+                j_object[field.name()] = field.as<std::string>();
+            }
         }
         // 将 JSON 对象添加到数组中
         j_array.push_back(j_object);

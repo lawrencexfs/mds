@@ -19,6 +19,7 @@
 #include <unordered_map>
 #include <utility>
 #include <variant>
+#include <future>
 #include <mimalloc-override.h>
 #include "nlohmann/json.hpp"
 #include <boost/uuid/uuid.hpp>

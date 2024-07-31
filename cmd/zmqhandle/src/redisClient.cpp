@@ -36,72 +36,111 @@ RedisClient::~RedisClient()
 {
     if (_client != nullptr)
     {
-        redisFree(_client);
+        // redisFree(_client);
+        delete _client;
         _client = nullptr;
     }
 }
 
 bool RedisClient::connect()
 {
-    _client = redisConnect(_connectIP.c_str(), _port);
-    if (_client == nullptr || _client->err)
+    sw::redis::ConnectionOptions connection_options;
+    connection_options.host = _connectIP; // Required.
+    connection_options.port = _port;      // Optional. The default port is 6379.
+    // connection_options.password = "auth";   // Optional. No password by default.
+    connection_options.db = 0; // Optional. Use the 0th database by default.
+
+    sw::redis::ConnectionPoolOptions pool_options;
+    pool_options.size = 10; // Pool size, i.e. max number of connections.
+    pool_options.wait_timeout = std::chrono::milliseconds(100);
+
+    // sw::redis::RedisCluster *redisofDB1 = NULL;
+    try
     {
-        std::cout << "redis Connect err! func stack is " << CUtil::printTrace();
-        if (_client->err)
-        {
-            std::cout << "redis Connect err is " << _client->errstr;
-        }
+        _client = new sw::redis::AsyncRedisCluster(connection_options, pool_options);
+    }
+    catch (const sw::redis::ReplyError &err)
+    {
+        printf("RedisHandler-- ReplyError：%s \n", err.what());
+        return false;
+    }
+    catch (const sw::redis::TimeoutError &err)
+    {
+        printf("RedisHandler-- TimeoutError%s \n", err.what());
+        return false;
+    }
+    catch (const sw::redis::ClosedError &err)
+    {
+        printf("RedisHandler-- ClosedError%s \n", err.what());
+        return false;
+    }
+    catch (const sw::redis::IoError &err)
+    {
+        printf("RedisHandler-- IoError%s \n", err.what());
+        return false;
+    }
+    catch (const sw::redis::Error &err)
+    {
+        printf("RedisHandler-- other%s \n", err.what());
         return false;
     }
     std::cout << "redis connect success! addr is " << _connectIP << ":" << _port << std::endl;
     return true;
 }
 
-void RedisClient::exeCommand(RedisReplyWrap &reply, const std::string &order)
-{
-    auto *replyTemp = static_cast<redisReply *>(redisCommand(_client, order.c_str()));
-    if (replyTemp == nullptr)
-    {
-        std::cout << "Failed to execute command: " << _client->errstr << " func stack is " << CUtil::printTrace();
-        return;
-    }
-    reply._reply = replyTemp;
-}
-
 void RedisClient::exeSetCommand(RedisReplyWrap &reply, const std::string &key, std::string value)
 {
-    auto *replyTemp = static_cast<redisReply *>(redisCommand(_client, "SET %b %b", key.c_str(), key.length(), value.c_str(), value.length()));
-    if (replyTemp == nullptr)
+    try
     {
-        std::cout << "Failed to execute command: " << _client->errstr << " func stack is " << CUtil::printTrace();
-        return;
-    }
-    reply._reply = replyTemp;
+        // auto ret = _client->set(key, value);
+        // reply._ok = true;
+        // std::future<bool> ret = _client->set(key, value);
+        // bool setResult = ret.get();
+        // Async interface with callback.
+        _client->set(key, value,
+                     [](std::future<bool> &&fut)
+                     {
+                         try
+                         {
+                             auto set_res = fut.get();
+                         }
+                         catch (const std::exception &err)
+                         {
+                             // handle error
+                         }
+                     });
 
-    if (replyTemp->type == REDIS_REPLY_STRING)
-    {
-        // 解析字符串类型的结果
-        std::string result(replyTemp->str, replyTemp->len);
-        // 使用 result 进行后续操作
+        reply._ok = true;
     }
-    else if (replyTemp->type == REDIS_REPLY_INTEGER)
+    catch (const sw::redis::ReplyError &err)
     {
-        // 解析整数类型的结果
-        int result = replyTemp->integer;
-        // 使用 result 进行后续操作
+        // WRONGTYPE Operation against a key holding the wrong kind of value
+        std::cout << err.what() << std::endl;
     }
-    else if (replyTemp->type == REDIS_REPLY_ARRAY)
+    catch (const sw::redis::TimeoutError &err)
     {
-        // 解析数组类型的结果
-        for (size_t i = 0; i < replyTemp->elements; i++)
-        {
-            redisReply *element = replyTemp->element[i];
-            // 根据 element 的类型进行进一步解析
-        }
+        // reading or writing timeout
+        std::cout << err.what() << std::endl;
     }
-    else
+    catch (const sw::redis::ClosedError &err)
     {
-        // 处理其他类型的结果
+        // the connection has been closed.
+        std::cout << err.what() << std::endl;
+    }
+    catch (const sw::redis::IoError &err)
+    {
+        // there's an IO error on the connection.
+        std::cout << err.what() << std::endl;
+    }
+    catch (const sw::redis::Error &err)
+    {
+        // other errors
+        std::cout << err.what() << std::endl;
+    }
+    catch (const std::exception &err)
+    {
+        // 如果以上错误类型都不捕捉，直接捕捉 excepion
+        std::cout << "std::exception : " << err.what() << std::endl;
     }
 }
 
@@ -113,7 +152,7 @@ void RedisClient::handleSelect(const std::string &order, std::string object)
     // std::string cmd = std::format("set '{0}' '{1}' ", s, object);
     // std::string cmd = std::format("set %b %b ", order, object);
     exeSetCommand(replyTemp, order, object);
-    if (replyTemp._reply && strcmp(replyTemp._reply->str, "OK") == 0)
+    if (replyTemp._ok)
     {
         // ok
     }
@@ -128,7 +167,7 @@ void RedisClient::handleNoSelect(const std::string &order)
     // std::string cmd = std::format("set '{0}' {1}", order, 1);
     // exeCommand(replyTemp, cmd);
     exeSetCommand(replyTemp, order, "1");
-    if (replyTemp._reply && strcmp(replyTemp._reply->str, "OK") == 0)
+    if (replyTemp._ok)
     {
         // ok
     }
@@ -142,7 +181,7 @@ void RedisClient::execSqlFail(const std::string &order, std::string err)
 {
     RedisReplyWrap replyTemp;
     exeSetCommand(replyTemp, order, err);
-    if (replyTemp._reply && strcmp(replyTemp._reply->str, "OK") == 0)
+    if (replyTemp._ok)
     {
         // ok
     }
@@ -154,66 +193,26 @@ void RedisClient::execSqlFail(const std::string &order, std::string err)
 
 std::string RedisClient::get(const std::string &key)
 {
-    std::string ret;
-    RedisReplyWrap replyTemp;
-    exeCommand(replyTemp, std::string("get ") + key);
-    if (replyTemp._reply)
+    std::string result;
+    try
     {
-        if (replyTemp._reply->type == REDIS_REPLY_STRING)
+        std::future<sw::redis::OptionalString> ret = _client->get(key);
+        auto value = ret.get();
+        if (value)
         {
-            // 解析字符串类型的结果
-            std::string result(replyTemp._reply->str, replyTemp._reply->len);
-            ret = result;
-            // 使用 result 进行后续操作
-        }
-        else if (replyTemp._reply->type == REDIS_REPLY_INTEGER)
-        {
-            // 解析整数类型的结果
-            int result = replyTemp._reply->integer;
-            // 使用 result 进行后续操作
-        }
-        else if (replyTemp._reply->type == REDIS_REPLY_ARRAY)
-        {
-            // 解析数组类型的结果
-            for (size_t i = 0; i < replyTemp._reply->elements; i++)
-            {
-                redisReply *element = replyTemp._reply->element[i];
-                // 根据 element 的类型进行进一步解析
-            }
+            result = *value;
         }
         else
         {
-            // 处理其他类型的结果
+            std::cout << "Key not found or error occurred" << std::endl;
         }
     }
-    else
+    catch (const std::exception &err)
     {
-        std::cout << "redis err is " << std::endl;
+        // 如果以上错误类型都不捕捉，直接捕捉 excepion
+        std::cout << "std::exception : " << err.what() << std::endl;
     }
-    return ret;
-}
-
-void RedisClient::startTransaction()
-{
-    _transactionOrderNum = 0;
-    redisAppendCommand(_client, "MULTI");
-}
-
-void RedisClient::addCommandToTransaction(const std::string &order)
-{
-    redisAppendCommand(_client, order.c_str());
-    ++_transactionOrderNum;
-}
-
-void RedisClient::exeTransaction(std::vector<RedisReplyWrap> &replyArry)
-{
-    redisAppendCommand(_client, "EXEC");
-    RedisReplyWrap temp;
-    for (decltype(_transactionOrderNum) i = 0; i < _transactionOrderNum; i++)
-    {
-        redisGetReply(_client, (void **)(&temp._reply));
-        replyArry.emplace_back(temp._reply);
-    }
+    return result;
 }
 
 std::string CUtil::printTrace()
