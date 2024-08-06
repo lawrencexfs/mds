@@ -80,7 +80,6 @@
         "mutex": "cpp",
         "typeindex": "cpp",
         "valarray": "cpp",
-        "regex": "cpp",
-        "*.ipp": "cpp"
+        "regex": "cpp"
     }
 }
