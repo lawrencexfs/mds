@@ -1,11 +1,11 @@
 module mds
 
-go 1.21
+go 1.23
 
-toolchain go1.22.4
+toolchain go1.23.4
 
 require (
-	github.com/PuerkitoBio/goquery v1.6.1
+	// github.com/PuerkitoBio/goquery v1.6.1
 	github.com/gin-gonic/gin v1.6.2
 	github.com/go-zeromq/zmq4 v0.17.0
 	github.com/google/uuid v1.1.1
@@ -16,8 +16,10 @@ require (
 	gopkg.in/yaml.v2 v2.2.8
 )
 
+require github.com/PuerkitoBio/goquery v1.10.0
+
 require (
-	github.com/andybalholm/cascadia v1.1.0 // indirect
+	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
 	github.com/go-playground/universal-translator v0.17.0 // indirect
@@ -38,11 +40,11 @@ require (
 	github.com/ugorji/go/codec v1.1.7 // indirect
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v0.0.0-20180714160509-73f8eece6fdc // indirect
-	golang.org/x/crypto v0.23.0 // indirect
-	golang.org/x/net v0.25.0 // indirect
-	golang.org/x/sync v0.7.0 // indirect
-	golang.org/x/sys v0.20.0 // indirect
-	golang.org/x/text v0.16.0 // indirect
+	golang.org/x/crypto v0.27.0 // indirect
+	golang.org/x/net v0.29.0 // indirect
+	golang.org/x/sync v0.8.0 // indirect
+	golang.org/x/sys v0.25.0 // indirect
+	golang.org/x/text v0.18.0 // indirect
 )
 
 // replace glog => /home/gopath/src/glog

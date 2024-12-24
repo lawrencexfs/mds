@@ -32,6 +32,7 @@ set GOOS=windows
 set GOPATH=E:\gospace
 
 set GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+set GOPROXY=https://goproxy.cn,https://proxy.golang.org,direct
 set GOROOT=E:\tools\go
 set GOSUMDB=sum.golang.org
 set GOTOOLDIR=E:\tools\go\pkg\tool\windows_amd64

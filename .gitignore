@@ -36,3 +36,5 @@ cmd/base64/bigint/build/*
 cmd/compress-plug/build/*
 cmd/compress-plug/.vscode/*
 cmd/zmqhandle/build/
+vendor/*
+mds.exe
