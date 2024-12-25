@@ -16,9 +16,14 @@ require (
 	gopkg.in/yaml.v2 v2.2.8
 )
 
-require github.com/PuerkitoBio/goquery v1.10.0
+require (
+	github.com/PuerkitoBio/goquery v1.10.0
+	github.com/alexflint/go-arg v1.5.1
+	golang.org/x/text v0.18.0
+)
 
 require (
+	github.com/alexflint/go-scalar v1.2.0 // indirect
 	github.com/andybalholm/cascadia v1.3.2 // indirect
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/go-playground/locales v0.13.0 // indirect
@@ -44,7 +49,6 @@ require (
 	golang.org/x/net v0.29.0 // indirect
 	golang.org/x/sync v0.8.0 // indirect
 	golang.org/x/sys v0.25.0 // indirect
-	golang.org/x/text v0.18.0 // indirect
 )
 
 // replace glog => /home/gopath/src/glog
