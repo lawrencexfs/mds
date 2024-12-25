@@ -73,3 +73,26 @@ $ CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ./make.bat
 
 $ CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 $ CGO_ENABLED=0 GOOS=windows GOARCH=amd64 go build
+
+
+flxa 开发环境
+
+ftp://10.6.25.145/
+
+CLion 2024.2.1
+ftp://10.6.25.145/周小川/clion/CLion-2024.2.1.exe
+1.17 GB (1,262,259,504 字节)
+
+vscode
+C/C++
+C/C++ Extension Pack
+C/C++ Themes
+C++ Intellisense
+Chinese (Simplified)
+翻译(英汉词典)
+CMake
+CMake Tools
+CMake Integration
+Git Graph
+Go
+Go Nightly

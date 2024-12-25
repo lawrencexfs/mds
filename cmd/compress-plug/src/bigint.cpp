@@ -375,7 +375,7 @@ std::string LargeInt::DecodeBase64(std::string base64) const
     LargeInt tp(0);
     for (int ind = 0; ind < base64.size(); ind++)
     {
-        u_int val = base64[ind];
+        unsigned int val = base64[ind];
         // val 字符 通过转换映射数组找到对应的索引数值
         val = valueToIndex[val];
         tp = tp * 64 + val;

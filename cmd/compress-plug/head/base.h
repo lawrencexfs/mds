@@ -8,16 +8,10 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
-#include <boost/archive/iterators/base64_from_binary.hpp>
-#include <boost/archive/iterators/binary_from_base64.hpp>
-#include <boost/archive/iterators/transform_width.hpp>
 
 #include <random>
 #include <iomanip>
 
-#include <boost/uuid/uuid.hpp>
-#include <boost/uuid/uuid_generators.hpp>
-#include <boost/uuid/uuid_io.hpp>
 
 /**
  * @description:  将16进制UUID转换为64进制编码
