@@ -1,0 +1,7 @@
+[root@localhost yum.repos.d]# cat CentOS-AppStream.repo
+[AppStream]
+name=CentOS-$releasever - AppStream
+baseurl=http://mirrors.aliyun.com/centos/$releasever/AppStream/$basearch/os/
+gpgcheck=1
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-centosofficial
+enabled=1

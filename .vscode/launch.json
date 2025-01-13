@@ -28,6 +28,37 @@
             ]
         },
         {
+            "name": "Launch flxa1demo",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": ".\\cmd\\flxa.demo\\demo.go"
+        },
+        {
+            "name": "Launch flxa2demo",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": ".\\cmd\\flxa.demo\\demo.go",
+            "args": [
+                "--iunithost=http://10.6.25.34:8083",
+                "--iunitusername=admin",
+                "--iunitpassword=123456",
+                "--projectname=lua5",
+                "--giturl=http://192.169.128.2:8181/wan/lua543.git",
+                "--gitusername=shisiting",
+                "--gitpassword=qazxsw123",
+                "--gitbranch=main",
+                "--commitid=e99d41eef275db19cb1b50f2860538aa7c875f4c",
+                "--timeout=1800",
+                "--buildid=10",
+                "--jobid=1",
+                "--sampleid=14",
+                "--testcasetype=0,1,2,10,11",
+                "--ignorefile=.txt"
+            ]
+        },
+        {
             "name": "C++ Debug",
             "type": "cppdbg",
             "request": "launch",

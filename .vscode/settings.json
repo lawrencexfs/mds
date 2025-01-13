@@ -88,5 +88,6 @@
         "ranges": "cpp",
         "stdfloat": "cpp",
         "typeindex": "cpp"
-    }
+    },
+    "cmake.ignoreCMakeListsMissing": true
 }

@@ -1,0 +1,43 @@
+# CentOS-Base.repo
+#
+# The mirror system uses the connecting IP address of the client and the
+# update status of each mirror to pick mirrors that are updated to and
+# geographically close to the client.  You should use this for CentOS updates
+# unless you are manually picking other mirrors.
+#
+# If the mirrorlist= does not work for you, as a fall back you can try the 
+# remarked out baseurl= line instead.
+#
+#
+
+[base]
+name=Aliyun-CentOS-$releasever-base-mirror
+baseurl=http://mirrors.aliyun.com/centos/$releasever/os/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+#released updates
+[updates]
+name=Aliyun-CentOS-$releasever-updates-mirror
+baseurl=http://mirrors.aliyun.com/centos/$releasever/updates/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+#additional packages that may be useful
+[extras]
+name=Aliyun-CentOS-$releasever-extras-mirror
+baseurl=http://mirrors.aliyun.com/centos/$releasever/extras/$basearch/
+gpgcheck=1
+gpgkey=http://mirrors.aliyun.com/centos/RPM-GPG-KEY-CentOS-7
+
+
+
+/etc/yum.repos.d/CentOS-Base.repo
+
+yum clean all
+sudo yum makecache
+sudo yum update -y
+
+sudo yum install -y gcc gcc-c++
+
+sudo yum install -y glibc-devel openssl-devel zlib-devel libcurl-devel
+
+sudo yum install -y cmake
