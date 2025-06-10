@@ -87,7 +87,8 @@
         "future": "cpp",
         "ranges": "cpp",
         "stdfloat": "cpp",
-        "typeindex": "cpp"
+        "typeindex": "cpp",
+        "valarray": "cpp"
     },
     "cmake.ignoreCMakeListsMissing": true
 }

@@ -2,9 +2,9 @@ package api
 
 import (
 	"context"
-	"net/http"
-	"mds/db"
 	"glog"
+	"mds/db"
+	"net/http"
 
 	"mds/api/conf"
 	"mds/api/model"
@@ -14,7 +14,7 @@ var (
 	srv *http.Server
 )
 
-//Init 初始化WEB api
+// Init 初始化WEB api
 func Init(path, version string) {
 
 	conf.LoadConfOrDie(path, version)
@@ -29,11 +29,15 @@ func Init(path, version string) {
 		Collection: config.MongoAddr.Collection, //"local",
 	}
 	client, coll := mgodb.Open()
+	if client == nil {
+		glog.Error("MongoDB client is nil")
+		return
+	}
 	model.Init(client, coll)
 
 }
 
-//StartContext 启动master 节点
+// StartContext 启动master 节点
 func StartContext(ctx context.Context) {
 
 	go func() {
@@ -44,7 +48,7 @@ func StartContext(ctx context.Context) {
 	}()
 }
 
-//GracefulStop exit
+// GracefulStop exit
 func GracefulStop() {
 	srv.Shutdown(nil)
 	glog.V(2).Infoln("HTTP Server exited.")

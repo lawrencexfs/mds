@@ -9,9 +9,9 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/root/dev/mds/cmd/filesvr/filesvr.go",
+            "program": ".\\mds.go",
             "args": [
-                "--addr=:8081"
+                "--conf=conf.yml"
             ]
         },
         {
@@ -26,6 +26,13 @@
                 "-dir",
                 "/"
             ]
+        },
+        {
+            "name": "Launch Command",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": ".\\cmd\\Command\\demo.go"
         },
         {
             "name": "Launch flxa1demo",

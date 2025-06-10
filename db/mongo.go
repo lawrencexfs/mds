@@ -28,6 +28,7 @@ func (m *Mongo) Open() (*mongo.Client, *mongo.Collection) {
 	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Print(err)
+		return nil, nil
 	}
 	m.client = client
 

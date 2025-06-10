@@ -19,6 +19,7 @@ require (
 require (
 	github.com/PuerkitoBio/goquery v1.10.0
 	github.com/alexflint/go-arg v1.5.1
+	github.com/google/gopacket v1.1.19
 	golang.org/x/text v0.18.0
 )
 
