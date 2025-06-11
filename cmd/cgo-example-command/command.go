@@ -9,6 +9,7 @@ import (
 import (
 	"bufio"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -111,6 +112,7 @@ func RunCommandWithOut(path *C.char, args *C.char, pstdout, pstderr, perrOut **C
 	}
 	if err != nil {
 		*perrOut = C.CString(err.Error())
+		fmt.Fprintf(os.Stderr, "[Run Error] %v\n", err)
 	}
 
 	// result := fmt.Sprintf("stdout: %s\nstderr: %s\nerr: %v", stdout, stderr, err)
