@@ -5,6 +5,7 @@ go.sum
 conf.yml
 client
 server
+cmd/*/*.dll
 cmd/filesvr/filesvr
 cmd/tcpsvr/tsvr
 cmd/tcpcli/tcli
