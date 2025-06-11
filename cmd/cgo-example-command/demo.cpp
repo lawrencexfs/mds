@@ -42,3 +42,6 @@ int main() {
 }
 // PS E:\space\mds\cmd\cgo-example-command> go build -buildmode=c-shared  -o command.dll  command.go
 // PS E:\space\mds\cmd\cgo-example-command> g++ -o demo.exe demo.cpp -L. -lcommand
+
+// PS E:\space\mds\cmd\cgo-example-command> go build -buildmode=c-archive  -o command.a  command.go
+// PS E:\space\mds\cmd\cgo-example-command> g++ -o demoa.exe demo.cpp command.a

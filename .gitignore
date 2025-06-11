@@ -6,6 +6,7 @@ conf.yml
 client
 server
 cmd/*/*.dll
+cmd/*/*.a
 cmd/filesvr/filesvr
 cmd/tcpsvr/tsvr
 cmd/tcpcli/tcli
@@ -138,3 +139,4 @@ cmd/task-project/cmake-build-debug/CMakeFiles/taskplug.dir/src/bigint.cpp.obj
 cmd/task-project/cmake-build-debug/CMakeFiles/taskplug.dir/src/compress.cpp.obj
 cmd/task-project/cmake-build-debug/CMakeFiles/taskplug.dir/src/task.cpp.obj
 cmd/task-project/cmake-build-debug/Testing/Temporary/LastTest.log
+cmd/cgo-example-command/command.a
