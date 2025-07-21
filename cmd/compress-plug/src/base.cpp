@@ -38,7 +38,7 @@ void hex_uuid_to_base64(const char *hex_uuid, char *base64_uuid)
         base64_uuid[base64_len - 1 - i] = '=';
     }
 }
-
+typedef unsigned char   uint8_t;
 // 将64进制编码的UUID进行解码为16进制UUID
 void base64_to_hex_uuid(const char *base64_uuid, char *hex_uuid)
 {
@@ -56,7 +56,7 @@ void base64_to_hex_uuid(const char *base64_uuid, char *hex_uuid)
     size_t binary_len = (size_t)((base64_len * 3) / 4);
 
     // 进行Base64解码
-    uint8_t binary_uuid[binary_len];
+    std::vector<uint8_t> binary_uuid(binary_len);
     size_t i, j;
 
     for (i = 0, j = 0; i < base64_len; i += 4, j += 3)
