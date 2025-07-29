@@ -3,14 +3,16 @@ package main
 import (
 	"context"
 	"flag"
-	"fmt"
-	"glog"
+	"log"
 	"mds/api"
+	"mds/chat"
 	"net/http"
 	_ "net/http/pprof"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/gorilla/mux"
 )
 
 /*
@@ -29,15 +31,37 @@ var (
 func main() {
 
 	flag.Parse()
-	defer glog.Flush()
-	glog.Infoln("Server start ...")
-	fmt.Println("Server start ...")
+	// defer log.Flush()
+	log.Println("Server start ...")
 
 	if *pprof != "" {
 		go func() {
-			glog.Infoln(http.ListenAndServe(*pprof, nil))
+			log.Println(http.ListenAndServe(*pprof, nil))
 		}()
 	}
+
+	// 创建聊天室服务
+	chatService := chat.NewChatService()
+
+	// 创建默认房间
+	chatService.CreateRoom("IUNIT", "默认房间")
+
+	// 创建路由器
+	r := mux.NewRouter()
+
+	// 注册路由
+	r.HandleFunc("/", chat.HandleHome)
+	r.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
+		chat.HandleWebSocket(chatService, w, r)
+	})
+
+	// 启动服务器
+	port := "8082"
+	log.Printf("服务器启动在端口 %s", port)
+
+	go func() {
+		log.Println(http.ListenAndServe(":"+port, r))
+	}()
 
 	api.Init(*confFile, version)
 
@@ -49,8 +73,8 @@ func main() {
 
 	<-ch
 	//TODO 清理资源
-	glog.Infoln("收到 ctrl+c 命令....")
-	fmt.Println("Server stop ...")
+	log.Println("收到 ctrl+c 命令....")
+	log.Println("Server stop ...")
 	cancel()
 	api.GracefulStop()
 

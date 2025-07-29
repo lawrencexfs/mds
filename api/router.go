@@ -5,19 +5,20 @@ import (
 	"log"
 
 	"github.com/gin-gonic/gin"
-	"github.com/google/uuid"
 
 	"mds/api/model"
+
+	"github.com/google/uuid"
 )
 
-//Resp 返回基本状态定义
+// Resp 返回基本状态定义
 type Resp struct {
 	Code    int32  `json:"code"`
 	Message string `json:"message"`
 	Detail  string `json:"detail,omitempty"`
 }
 
-//返回状态码
+// 返回状态码
 var (
 	SUCCESS    = Resp{Code: 0, Message: "成功", Detail: "Welcome use mds server"}
 	SUCCESS_V  = Resp{Code: 1, Detail: "Welcome visitor here"}
@@ -25,7 +26,7 @@ var (
 	ReqArgsErr = Resp{Code: 9001, Message: "请求参数错误"}
 )
 
-//SetupRouter return master api router
+// SetupRouter return master api router
 func SetupRouter() *gin.Engine {
 	gin.SetMode(gin.ReleaseMode)
 
@@ -47,13 +48,12 @@ func SetupRouter() *gin.Engine {
 
 }
 
-//通用回复
+// 通用回复
 func HelloRespV(c *gin.Context) {
 	glog.V(2).Infoln("接收请求.")
 	c.JSON(200, SUCCESS_V)
 }
 
-//
 func HelloResp(c *gin.Context) {
 	glog.V(2).Infoln("接收请求.")
 	sinfo := "....test len 16 + X"

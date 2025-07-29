@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"glog"
+	"log"
 	"mds/db"
 	"net/http"
 
@@ -21,6 +22,8 @@ func Init(path, version string) {
 	config := conf.Get()
 	router := SetupRouter()
 	srv = &http.Server{Addr: config.APIAddr, Handler: router}
+	log.Println("Api svr addr: ", config.APIAddr)
+	log.Println("Mongo addr: ", config.MongoAddr)
 
 	// config.MongoAddr
 	var mgodb = &db.Mongo{

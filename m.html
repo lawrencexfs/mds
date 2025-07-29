@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>GO GO GO 聊天室</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 20px; }
+        #chat-container { max-width: 800px; margin: 0 auto; }
+        #chat-header { background-color: #4CAF50; color: white; padding: 10px; text-align: center; }
+        #chat-messages { height: 400px; overflow-y: scroll; border: 1px solid #ddd; padding: 10px; margin: 10px 0; }
+        #chat-input { width: 100%; padding: 10px; margin: 10px 0; }
+        #chat-button { background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        .message { margin: 5px 0; padding: 8px; border-radius: 4px; }
+        .message.system { background-color: #f0f0f0; }
+        .message.user { background-color: #e0f7fa; }
+        .message.me { background-color: #e8f5e9; text-align: right; }
+    </style>
+</head>
+<body>
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>GO GO GO 聊天室</h2>
+            <div>房间: <span id="room-id">IUNIT</span></div>
+        </div>
+        <div id="chat-messages"></div>
+        <input type="text" id="chat-input" placeholder="输入消息...">
+        <button id="chat-button">发送</button>
+    </div>
+    
+    <script>
+        // 配置参数
+        const ROOM_ID = "IUNIT";
+        const USER_ID = "user_" + Math.floor(Math.random() * 1000000);
+        const USER_NAME = "用户" + Math.floor(Math.random() * 1000);
+        
+        // 对用户名称进行URL编码
+        const encodedUserName = encodeURIComponent(USER_NAME);
+        
+        // 构建WebSocket连接URL
+        const wsUrl = `ws://${window.location.host}/ws?room=${ROOM_ID}&user=${USER_ID}&name=${encodedUserName}`;
+        let socket = new WebSocket(wsUrl);
+        
+        // DOM元素
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const chatButton = document.getElementById('chat-button');
+        const roomIdElement = document.getElementById('room-id');
+        
+        // 设置房间ID显示
+        roomIdElement.textContent = ROOM_ID;
+        
+        // 连接建立时
+        socket.onopen = function(event) {
+            addMessage("系统", "已连接到聊天室", "system");
+        };
+        
+        // 接收到消息时
+        socket.onmessage = function(event) {
+            const data = JSON.parse(event.data);
+            
+            switch(data.type) {
+                case 'join':
+                    addMessage("系统", data.content, "system");
+                    break;
+                case 'leave':
+                    addMessage("系统", data.content, "system");
+                    break;
+                case 'message':
+                    if(data.from === USER_ID) {
+                        addMessage("我", data.content, "me");
+                    } else {
+                        addMessage(data.fromName, data.content, "user");
+                    }
+                    break;
+                case 'system':
+                    addMessage("系统", data.content, "system");
+                    break;
+                case 'list':
+                    // 处理用户列表
+                    if(data.data && data.data.length > 0) {
+                        addMessage("系统", `当前在线: ${data.data.length}人`, "system");
+                    }
+                    break;
+            }
+        };
+        
+        // 连接关闭时
+        socket.onclose = function(event) {
+            addMessage("系统", "连接已关闭", "system");
+            
+            // 尝试重连
+            setTimeout(function() {
+                socket = new WebSocket(wsUrl);
+            }, 5000);
+        };
+        
+        // 发生错误时
+        socket.onerror = function(error) {
+            addMessage("系统", `发生错误: ${error.message}`, "system");
+        };
+        
+        // 添加消息到聊天窗口
+        function addMessage(sender, message, type) {
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            
+            if(type === 'system') {
+                div.innerHTML = `<em>${message}</em>`;
+            } else {
+                div.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            }
+            
+            chatMessages.appendChild(div);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+        
+        // 发送消息
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if(message && socket.readyState === WebSocket.OPEN) {
+                socket.send(JSON.stringify({
+                    type: 'message',
+                    content: message
+                }));
+                chatInput.value = '';
+            }
+        }
+        
+        // 绑定事件
+        chatButton.addEventListener('click', sendMessage);
+        chatInput.addEventListener('keypress', function(event) {
+            if(event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
