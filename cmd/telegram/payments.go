@@ -6,34 +6,36 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
-func main() {
-	bot, err := tgbotapi.NewBotAPI("YOUR_API_TOKEN")
-	if err != nil {
-		log.Panic(err)
-	}
+// func main() {
+// 	providerToken := "YOUR_API_TOKEN"
+// 	bot, err := tgbotapi.NewBotAPI(providerToken)
+// 	if err != nil {
+// 		log.Panic(err)
+// 	}
 
-	bot.Debug = true
-	log.Printf("Authorized on account %s", bot.Self.UserName)
+// 	bot.Debug = true
+// 	log.Printf("Authorized on account %s", bot.Self.UserName)
+// 	price := []tgbotapi.LabeledPrice{}
 
-	// 发送发票
-	invoice := tgbotapi.NewInvoice("123456789", "Test Invoice", "This is a test invoice", "123456789", "284685063:TEST:OTRiZjEyYjU4MzA2")
-	invoice.Prices = []tgbotapi.LabeledPrice{
-		{Label: "价格1", Amount: 1000},
-		{Label: "价格2", Amount: 1002},
-		{Label: "折扣", Amount: -10},
-	}
-	invoice.Currency = "CNY"
-	invoice.NeedName = true
-	invoice.NeedPhoneNumber = true
-	invoice.NeedEmail = true
-	invoice.SendPhoneNumberToProvider = true
-	invoice.SendEmailToProvider = true
+// 	// 发送发票
+// 	invoice := tgbotapi.NewInvoice(111222333, "Test Invoice", "This is a test invoice", "123456789", providerToken, "x", "284685063:TEST:OTRiZjEyYjU4MzA2", price)
+// 	invoice.Prices = []tgbotapi.LabeledPrice{
+// 		{Label: "价格1", Amount: 1000},
+// 		{Label: "价格2", Amount: 1002},
+// 		{Label: "折扣", Amount: -10},
+// 	}
+// 	invoice.Currency = "CNY"
+// 	invoice.NeedName = true
+// 	invoice.NeedPhoneNumber = true
+// 	invoice.NeedEmail = true
+// 	invoice.SendPhoneNumberToProvider = true
+// 	invoice.SendEmailToProvider = true
 
-	_, err = bot.Send(invoice)
-	if err != nil {
-		log.Println(err)
-	}
-}
+// 	_, err = bot.Send(invoice)
+// 	if err != nil {
+// 		log.Println(err)
+// 	}
+// }
 
 func main() {
 	bot, err := tgbotapi.NewBotAPI("YOUR_API_TOKEN")
@@ -47,10 +49,10 @@ func main() {
 	u := tgbotapi.NewUpdate(0)
 	u.Timeout = 60
 
-	updates, err := bot.GetUpdatesChan(u)
-	if err != nil {
-		log.Panic(err)
-	}
+	updates := bot.GetUpdatesChan(u)
+	// if err != nil {
+	// 	log.Panic(err)
+	// }
 
 	go func() {
 		for update := range updates {
